@@ -7,20 +7,28 @@
 
 int main()
 {
-    // Initialize app with the Session.hpp class as one of the middlewares
+    // Inherit everything from CookieParser and Session classes
     crow::App<crow::CookieParser, app::middlewares::Session> app;
-    
-    CROW_ROUTE(app, "/")([](){
+
+    CROW_ROUTE(app, "/")([&](){
+        
         inja::json data;
-        data["test_variable"] = 1; // How to get the variable from current session?
-        return inja::render("{{ test_variable }}", data);
+        data["test_variable"] = 1;
+        return inja::render("Your variable is: {{ test_variable }}", data);
     });
     
-    CROW_ROUTE(app, "/test/").methods("GET"_method, "POST"_method)([](const crow::request& req){
-        // How to write a variable to current session?
-        return "Hello world";
+    CROW_ROUTE(app, "/set/")([](){
+
+        return "Variable set";
     });
 
+    CROW_ROUTE(app, "/change/")([&](const crow::request& req){
+        auto session = app.get_context<app::middlewares::Session>(req).session; // Gets a shared pointer to the user's session
+        auto test_result = session->has("test"); // Why does this dump core? It should just invoke a session method and store its result.
+        
+        return "Variable changed";
+    });
+    
     app.port(18080).multithreaded().run();
     return 0;
 }
