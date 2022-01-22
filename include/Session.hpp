@@ -42,12 +42,19 @@ namespace app{
             			using State = crow::json::wvalue;
             			
             		protected:
+						int test_var;
             			State state;
-            			
+    
             		public:
             			UserSession() = default;
             			UserSession(const UserSession&) = default; //because crow::json::wvalue is not copyable
             			UserSession(UserSession&&) = default;
+			
+						void test() { // 
+                            auto test_var_pointer = &(this->test_var);
+                            auto test_var_value = *test_var_pointer; // Dumps core
+							this->test_var = 1; // Also dumps core
+						}
             			
             			bool has(const Key& key){ return this->state.count(key) > 0; }
             			Value& get(const Key& key){ return this->state[key]; }
