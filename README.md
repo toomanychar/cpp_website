@@ -11,3 +11,7 @@ include/inja.hpp - https://github.com/pantor/inja
 include/json.hpp - https://github.com/nlohmann/json
 
 include/crow_all.h - https://github.com/CrowCpp/Crow
+
+
+To compile:
+g++ main.cpp -lpthread
