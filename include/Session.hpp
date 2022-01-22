@@ -51,7 +51,7 @@ namespace app{
 
             			int test_var;
                         void test() {
-                            auto test_var_pointer = &(this->test_var); // Doesn't dump[ core]
+                            auto test_var_pointer = &(this->test_var); // Doesn't dump core
                             auto test_var_value = this->test_var; // Dumps core
                             this->test_var = 0; // Dumps core
                         }
