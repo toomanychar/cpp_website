@@ -20,7 +20,8 @@ int main()
     
     CROW_ROUTE(app, "/set/")([&](const crow::request& req){
         
-        auto session = app.get_context<app::middlewares::Session>(req).session; // Gets a shared pointer to the users session
+        auto session = app.get_context<app::middlewares::Session>(req).session; // Gets a shared pointer to the user's session
+        session->has("Test"); // Dumps core. Why?
         session->test(); // Dumps core. Why?
 
         return "Variable set";
